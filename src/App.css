@@ -4,3 +4,16 @@
   padding: 2rem;
   text-align: center;
 }
+
+.loadingAnimation  {
+  animation: rotate 5s infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  } 
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -2,12 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'vazir';
+  font-weight: normal;
+  src: local('vazir'), url(/assets/fonts/Vazir-FD-WOL.ttf) format('ttf');
+  font-display: swap;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'vazir';
   line-height: 1.5;
-  font-weight: 400;
   color-scheme: light dark;
-  background-color: #242424;
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
