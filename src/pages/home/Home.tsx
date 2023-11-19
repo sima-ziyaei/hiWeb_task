@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { InitialState, QueryParams } from "../../utils/interfaces";
 
 export const queryParams: QueryParams = {
-  count: (Math.ceil((window.innerHeight - 180) / 290) *4) ,
+  count: (Math.ceil((window.innerHeight - 180) / 290) * 4),
   skip: 0,
 };
 
@@ -21,7 +21,6 @@ const Home: FC = () => {
   }) => state.product.product);
 
   const getProducts = () => {
-    // console.log(queryParams)
     Services.getProducts(queryParams)
       .then((res) => {
         if (res.totalRowCount > queryParams.skip + queryParams.count) {
@@ -43,14 +42,18 @@ const Home: FC = () => {
   };
 
   useEffect(() => {
-    if (queryParams.skip === 0) getProducts();
+    if (queryParams.skip === 0) {
+      getProducts();
+    }
     if (totalRowCount !== products.length) {
       window.addEventListener("scroll", handleScroll);
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };
     }
-  }, []);
+
+
+  }, [window.scroll]);
 
   if (!products) return null;
   return (
