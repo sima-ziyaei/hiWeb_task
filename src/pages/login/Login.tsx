@@ -1,18 +1,18 @@
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import Services from "../../service-call/services";
 import { useNavigate } from "react-router-dom";
 import { FiCheck } from "react-icons/fi";
 import "../../App.css";
 
-const Login = () => {
+const Login : FC = () => {
   const userNameRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState<boolean>(false);
-  const [error , setError] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const setLocalStorageItems = (inputarray: any[]) => {
-    for (let item of inputarray) {
+  const setLocalStorageItems = (inputarray) => {
+    for (const item of inputarray) {
       if (typeof item[1] == "object") {
         setLocalStorageItems(Object.entries(item[1]));
       } else {
@@ -24,22 +24,25 @@ const Login = () => {
   const validateByPassword = (e) => {
     e.preventDefault();
 
-    if (userNameRef.current.value.trim() == "" || passwordRef.current.value.trim() == ""){
-      setError(" تمام فیلد ها الزامی میباشند ")
+    if (
+      userNameRef.current.value.trim() == "" ||
+      passwordRef.current.value.trim() == ""
+    ) {
+      setError(" تمام فیلد ها الزامی میباشند ");
       return;
     }
-      Services.loginByAccessToken({
-        userName: userNameRef?.current?.value,
-        passWord: passwordRef?.current?.value,
+    Services.loginByAccessToken({
+      userName: userNameRef?.current?.value,
+      passWord: passwordRef?.current?.value,
+    })
+      .then((res) => {
+        setLocalStorageItems(Object.entries(res));
+        setShowLoading(true);
+        setTimeout(() => navigate("/"), 2000);
       })
-        .then((res) => {
-          setLocalStorageItems(Object.entries(res));
-          setShowLoading(true);
-          setTimeout(() => navigate("/"), 2000);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -48,7 +51,6 @@ const Login = () => {
       {showLoading ? (
         <div className="border border-solid border-[#9a9a9a] rounded-2xl flex flex-col items-center justify-center gap-12 py-20 px-28">
           <div className="rounded-full bg-[#57B872] w-16 h-16 text-white flex items-center justify-center text-3xl">
-            {" "}
             <FiCheck />
           </div>
           <p className="mb-0 text-[#57b872]"> ورود شما با موفقیت انجام شد. </p>
@@ -62,9 +64,8 @@ const Login = () => {
             onSubmit={validateByPassword}
           >
             <div className="flex flex-col gap-2">
-              <label className="text-[#9A9A9A] " htmlFor="username">
-                {" "}
-                نام کاربری{" "}
+              <label className="text-[#9A9A9A] text-right" htmlFor="username">
+                نام کاربری
               </label>
               <input
                 className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
@@ -76,9 +77,8 @@ const Login = () => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[#9A9A9A] " htmlFor="password">
-                {" "}
-                کلمه عبور{" "}
+              <label className="text-[#9A9A9A] text-right" htmlFor="password">
+                کلمه عبور
               </label>
 
               <input
@@ -90,7 +90,7 @@ const Login = () => {
                 id="password"
               />
             </div>
-            {error != "" ? <p className="text-[#FF6666]"> {error}</p> : null}
+            <p className="text-[#FF6666] h-8">{error != "" ? error : null}</p>
             <button
               className="bg-[#46B666] w-full rounded-lg text-white py-3"
               type="submit"

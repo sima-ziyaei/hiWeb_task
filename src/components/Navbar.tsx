@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import AddProduct from "./AddProduct";
+import { FC } from "react";
 
-export const Navbar = () => {
+export const Navbar : FC = () => {
   const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
   const logout = () => {

@@ -10,7 +10,6 @@ const regenerateAccessToken = () => {
     return localStorage.getItem('access_token');
 }
 
-
 export const loginValidation = () => {
     if(localStorage.getItem('access_token')){
         if(Date.now() > new Date(localStorage.getItem('expire_access_token')).getTime()){

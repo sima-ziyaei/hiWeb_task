@@ -1,13 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { InitialState } from "../utils/interfaces";
+
+const initialState : InitialState = {product : []}
 
 const slice = createSlice({
   name: "product",
-  initialState: {
-    product: [],
-  },
+  initialState: initialState,
   reducers: {
     setProduct: (state, action) => {
-      state.product = action.payload;
+      action.payload?.forEach((item) => {
+        if (!state.product.find(el=>el.id===item.id)) {
+          state.product.push(item);
+        }
+      });
     },
   },
 });

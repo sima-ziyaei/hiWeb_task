@@ -1,5 +1,6 @@
 import axios from "axios";
 import { loginValidation } from "../utils/functions";
+import { QueryParams } from "../utils/interfaces";
 
 export default class Services {
   static BASE_URL = "https://taskapi.hiweb.ir/api";
@@ -20,7 +21,7 @@ export default class Services {
       .then((res) => res.data.data ?? null);
   }
 
-  static async getProducts(params) {
+  static async getProducts(params:QueryParams) {
     const token = await loginValidation();
     return axios
       .get(Services.BASE_URL + Services.GET_PRODUCT_API, {

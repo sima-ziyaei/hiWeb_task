@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import Services from "../service-call/services";
 import Modal from "react-modal";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../redux/productSlice";
+import { queryParams } from "../pages/home/Home";
 
-const AddProduct = () => {
+const AddProduct: FC = () => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fileUploaded, setFileUploaded] = useState();
@@ -16,11 +17,13 @@ const AddProduct = () => {
     Description: "",
     file: null,
   });
+  const [error, setError] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     if (e.target.name === "file") {
+      setFileUploaded(e.target.files[0].name)
       setFormData({
         ...formData,
         [e.target.name]: e.target.files[0],
@@ -34,24 +37,38 @@ const AddProduct = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const data = new FormData();
-    data.append("ProductTitle", formData.ProductTitle);
-    data.append("ProductPrice", formData.ProductPrice);
-    data.append("Description", formData.Description);
-    data.append("file", formData.file);
-
-    Services.addProducts(data).then(()=>{
-      Services.getProducts().then((res)=>{
-        dispatch(setProduct(res))
+    if (Object.entries(formData).some(el => el[1] === "" || el[1] === null)) {
+      setError(true);
+    } else {
+      const addQueryParams = {
+          count: (Math.ceil((window.innerHeight - 180) / 290) *4) ,
+          skip: 0,
+        }
+      const data = new FormData();
+      Object.entries(formData).forEach((el) => {
+        data.append(el[0], el[1]);
       })
-    });
-    setFileUploaded(null);
 
-    setShowModal(false);
+      Services.addProducts(data).then(() => {
+        Services.getProducts(addQueryParams)
+          .then((res) => {
+            dispatch(setProduct(res.list));
+            if (res.totalRowCount > queryParams.skip + queryParams.count) {
+              queryParams.skip += queryParams.count;
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+      setFileUploaded(null);
+
+      setShowModal(false);
+    }
+
   };
 
-  const handleOpenFileBrowser = (event) => {
+  const handleOpenFileBrowser = () => {
     hiddenFileInput.current.click();
   };
 
@@ -77,9 +94,8 @@ const AddProduct = () => {
     <>
       <div
         onClick={() => setShowModal(false)}
-        className={` ${
-          showModal ? "block" : "hidden"
-        } fixed left-0 top-0 w-screen h-screen bg-[rgba(0,0,0,0.35)]`}
+        className={` ${showModal ? "block" : "hidden"
+          } fixed left-0 top-0 w-screen h-screen bg-[rgba(0,0,0,0.35)]`}
       ></div>
       <button
         onClick={() => {
@@ -123,7 +139,7 @@ const AddProduct = () => {
             </label>
 
             <input
-              type="text"
+              type="number"
               className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
               placeholder="قیمت محصول..."
               name="ProductPrice"
@@ -139,7 +155,6 @@ const AddProduct = () => {
 
             <textarea
               className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
-              //   ref={descriptionRef}
               placeholder="..."
               name="Description"
               id="Description"
@@ -152,7 +167,7 @@ const AddProduct = () => {
               بازگذاری عکس محصول
             </label>
             <div className="border border-solid border-[#b6b6b6] bg-white rounded-lg flex justify-between items-center ">
-              <p className="text-[#a0a0a0] mb-0 mr-3"> {fileUploaded?.name} </p>
+              <p className="text-[#a0a0a0] mb-0 mr-3"> {fileUploaded} </p>
               <div
                 onClick={handleOpenFileBrowser}
                 className="bg-[#c9c9c9] text-[#5c5c5c] py-3 px-6 rounded-lg w-fit self-end"
@@ -163,13 +178,13 @@ const AddProduct = () => {
             <input
               ref={hiddenFileInput}
               type="file"
-              // onChange={handleImageChange}
               className="hidden"
               name="file"
               id="file"
               onChange={handleInputChange}
             />
           </div>
+          <p className="text-[#FF6666] h-8">{error ? 'تمام فیلدها الزامی میباشند' : null}</p>
           <div className="flex justify-between mt-5">
             <button
               onClick={() => setShowModal(false)}
