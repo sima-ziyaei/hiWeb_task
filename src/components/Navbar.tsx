@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import AddProduct from "./AddProduct";
 import { FC } from "react";
+import t from '../../translate/fa.json';
 
 export const Navbar : FC = () => {
   const userName = localStorage.getItem("userName");
@@ -13,7 +14,7 @@ export const Navbar : FC = () => {
   return (
     <>
       <div className="flex w-full justify-between py-6">
-        <p className="text-black mb-0"> لیست محصولات </p>
+        <p className="text-black mb-0">  {t.product_list} </p>
 
         <div className="flex gap-6 items-center">
           <AddProduct />
@@ -25,7 +26,7 @@ export const Navbar : FC = () => {
             className="flex gap-1 cursor-pointer items-center"
           >
             <img src="/assets/logout.svg" />
-            <p className="mb-0 text-[#F66]"> خروج </p>
+            <p className="mb-0 text-[#F66]"> {t.exit} </p>
           </div>
         </div>
       </div>
@@ -33,5 +34,3 @@ export const Navbar : FC = () => {
     </>
   );
 };
-
-// default Navbar;

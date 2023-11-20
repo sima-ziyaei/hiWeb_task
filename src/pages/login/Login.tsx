@@ -3,6 +3,7 @@ import Services from "../../service-call/services";
 import { useNavigate } from "react-router-dom";
 import { FiCheck } from "react-icons/fi";
 import "../../App.css";
+import t from '../../../translate/fa.json';
 
 const Login : FC = () => {
   const userNameRef = useRef(null);
@@ -28,7 +29,7 @@ const Login : FC = () => {
       userNameRef.current.value.trim() == "" ||
       passwordRef.current.value.trim() == ""
     ) {
-      setError(" تمام فیلد ها الزامی میباشند ");
+      setError(t.all_fields_are_required);
       return;
     }
     Services.loginByAccessToken({
@@ -53,7 +54,7 @@ const Login : FC = () => {
           <div className="rounded-full bg-[#57B872] w-16 h-16 text-white flex items-center justify-center text-3xl">
             <FiCheck />
           </div>
-          <p className="mb-0 text-[#57b872]"> ورود شما با موفقیت انجام شد. </p>
+          <p className="mb-0 text-[#57b872]"> {t.you_entered_successfully} </p>
           <img src="/assets/loading.svg" className={"loadingAnimation"} />
         </div>
       ) : (
@@ -65,11 +66,11 @@ const Login : FC = () => {
           >
             <div className="flex flex-col gap-2">
               <label className="text-[#9A9A9A] text-right" htmlFor="username">
-                نام کاربری
+                 {t.user_name}
               </label>
               <input
                 className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
-                placeholder="نام کاربری..."
+                placeholder={`${t.user_name}...`}
                 type="text"
                 ref={userNameRef}
                 name="username"
@@ -78,14 +79,14 @@ const Login : FC = () => {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#9A9A9A] text-right" htmlFor="password">
-                کلمه عبور
+                 {t.password}
               </label>
 
               <input
                 type="password"
                 className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
                 ref={passwordRef}
-                placeholder="کلمه عبور..."
+                placeholder={`${t.password}...`}
                 name="password"
                 id="password"
               />
@@ -95,7 +96,7 @@ const Login : FC = () => {
               className="bg-[#46B666] w-full rounded-lg text-white py-3"
               type="submit"
             >
-              ورود
+              {t.enter}
             </button>
           </form>
         </div>

@@ -5,6 +5,7 @@ import { setProduct } from "../../redux/productSlice";
 import { loginValidation } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 import { InitialState, QueryParams } from "../../utils/interfaces";
+import t from '../../../translate/fa.json';
 
 export const queryParams: QueryParams = {
   count: (Math.ceil((window.innerHeight - 180) / 290) * 4),
@@ -71,7 +72,7 @@ const Home: FC = () => {
                   <p className="text-black"> {el.title} </p>
                   <p className=" text-[#5C5C5C] "> {el.description} </p>
                   <p className=" text-[#5C5C5C] ">
-                    قیمت :<span className="text-black">{el.view}</span>
+                    {t.price} :<span className="text-black">{el.view}</span>
                   </p>
                 </div>
               </div>
@@ -85,7 +86,7 @@ const Home: FC = () => {
             alt="emptyList"
             className="w-[297px] h-auto "
           />
-          <p className="text-[#ababab] mb-0 "> محصول خود را وارد نمایید. </p>
+          <p className="text-[#ababab] mb-0 "> {t.inter_your_product} </p>
         </div>
       )}
     </>

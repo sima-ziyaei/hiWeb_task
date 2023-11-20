@@ -1,0 +1,20 @@
+{
+    "inter_your_product": "محصول خود را وارد نمایید.",
+    "product_added": "محصول شما اضافه شد.",
+    "add_product": "افزودن محصول",
+    "product_name":"نام محصول",
+    "product_price":" قیمت محصول",
+    "description": "توضیحات",
+    "upload_product_photo":"بارگذاری عکس محصول",
+    "choose_file":"انتخاب فایل",
+    "all_fields_are_required": "تمام فیلد ها الزامی میباشند",
+    "cancel":"انصراف",
+    "submit_product":"ثبت محصول",
+    "price": "قیمت",
+    "product_list":"لیست محصولات",
+    "exit":"خروج",
+    "you_entered_successfully":"ورود شما با موفقیت انجام شد.",
+    "user_name":"نام کاربری",
+    "password":"کلمه عبور",
+    "enter":"ورود"
+}
