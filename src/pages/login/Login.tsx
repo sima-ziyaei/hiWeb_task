@@ -3,9 +3,10 @@ import Services from "../../service-call/services";
 import { useNavigate } from "react-router-dom";
 import { FiCheck } from "react-icons/fi";
 import "../../App.css";
-import t from '../../../translate/fa.json';
+import t from "../../../translate/fa.json";
+import { toast,ToastContainer } from "react-toastify";
 
-const Login : FC = () => {
+const Login: FC = () => {
   const userNameRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Login : FC = () => {
       userNameRef.current.value.trim() == "" ||
       passwordRef.current.value.trim() == ""
     ) {
+      toast.error(t.empty_field)
       setError(t.all_fields_are_required);
       return;
     }
@@ -66,7 +68,7 @@ const Login : FC = () => {
           >
             <div className="flex flex-col gap-2">
               <label className="text-[#9A9A9A] text-right" htmlFor="username">
-                 {t.user_name}
+                {t.user_name}
               </label>
               <input
                 className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
@@ -79,7 +81,7 @@ const Login : FC = () => {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#9A9A9A] text-right" htmlFor="password">
-                 {t.password}
+                {t.password}
               </label>
 
               <input
@@ -101,6 +103,7 @@ const Login : FC = () => {
           </form>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

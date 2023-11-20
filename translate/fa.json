@@ -1,6 +1,6 @@
 {
     "inter_your_product": "محصول خود را وارد نمایید.",
-    "product_added": "محصول شما اضافه شد.",
+    "product_added": "محصول  مورد نظر با موفقیت  اضافه شد.",
     "add_product": "افزودن محصول",
     "product_name":"نام محصول",
     "product_price":" قیمت محصول",
@@ -16,5 +16,8 @@
     "you_entered_successfully":"ورود شما با موفقیت انجام شد.",
     "user_name":"نام کاربری",
     "password":"کلمه عبور",
-    "enter":"ورود"
+    "enter":"ورود",
+    "logout_message":".از حساب کاربری خود خارج شدید",
+    "empty_field":"پر کردن همه فیلد ها الزامی است",
+    "loading":"در حال بارگیری..."
 }

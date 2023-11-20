@@ -4,11 +4,13 @@ import Modal from "react-modal";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../redux/productSlice";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import t from '../../translate/fa.json';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import t from "../../translate/fa.json";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct: FC = () => {
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fileUploaded, setFileUploaded] = useState();
@@ -25,7 +27,7 @@ const AddProduct: FC = () => {
 
   const handleInputChange = (e) => {
     if (e.target.name === "file") {
-      setFileUploaded(e.target.files[0].name)
+      setFileUploaded(e.target.files[0].name);
       setFormData({
         ...formData,
         [e.target.name]: e.target.files[0],
@@ -39,25 +41,27 @@ const AddProduct: FC = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.entries(formData).some(el => el[1] === "" || el[1] === null)) {
+    if (Object.entries(formData).some((el) => el[1] === "" || el[1] === null)) {
       setError(true);
     } else {
       const addQueryParams = {
-          count: (Math.ceil((window.innerHeight - 180) / 290) *4) ,
-          skip: 0,
-        }
+        count: Math.ceil((window.innerHeight - 180) / 290) * 4,
+        skip: 0,
+      };
       const data = new FormData();
       Object.entries(formData).forEach((el) => {
         data.append(el[0], el[1]);
-      })
+      });
 
       Services.addProducts(data).then(() => {
-        toast.success(t.product_added);
         Services.getProducts(addQueryParams)
-          .then((res) => {
+        .then((res) => {
+            toast.success(t.product_added);
             dispatch(setProduct(res.list));
           })
           .catch((err) => {
+            err.response.status == 401 ? navigate("/login") : "";
+            toast.error(err?.message);
             console.error(err);
           });
       });
@@ -65,7 +69,6 @@ const AddProduct: FC = () => {
 
       setShowModal(false);
     }
-
   };
 
   const handleOpenFileBrowser = () => {
@@ -94,8 +97,9 @@ const AddProduct: FC = () => {
     <>
       <div
         onClick={() => setShowModal(false)}
-        className={` ${showModal ? "block" : "hidden"
-          } fixed left-0 top-0 w-screen h-screen bg-[rgba(0,0,0,0.35)]`}
+        className={` ${
+          showModal ? "block" : "hidden"
+        } fixed left-0 top-0 w-screen h-screen bg-[rgba(0,0,0,0.35)]`}
       ></div>
       <button
         onClick={() => {
@@ -118,7 +122,7 @@ const AddProduct: FC = () => {
           className="flex flex-col gap-[18px] w-1/2"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-black">  </h2>
+          <h2 className="text-black"> </h2>
 
           <div className="flex flex-col gap-2">
             <label className="text-[#9A9A9A] " htmlFor="ProductTitle">
@@ -167,7 +171,7 @@ const AddProduct: FC = () => {
               {t.upload_product_photo}
             </label>
             <div className="border border-solid border-[#b6b6b6] bg-white rounded-lg flex justify-between items-center ">
-              <p className="text-[#a0a0a0] mb-0 mr-3"> {fileUploaded} </p>
+              <p className="text-[#a0a0a0] mb-0 mr-3"> {fileUploaded ?? 'jpeg،png'} </p>
               <div
                 onClick={handleOpenFileBrowser}
                 className="bg-[#c9c9c9] text-[#5c5c5c] py-3 px-6 rounded-lg w-fit self-end"
@@ -184,7 +188,9 @@ const AddProduct: FC = () => {
               onChange={handleInputChange}
             />
           </div>
-          <p className="text-[#FF6666] h-8">{error ? t.all_fields_are_required : null}</p>
+          <p className="text-[#FF6666] h-8">
+            {error ? t.all_fields_are_required : null}
+          </p>
           <div className="flex justify-between mt-5">
             <button
               onClick={() => setShowModal(false)}
@@ -198,7 +204,6 @@ const AddProduct: FC = () => {
           </div>
         </form>
       </Modal>
-      <ToastContainer />
     </>
   );
 };
