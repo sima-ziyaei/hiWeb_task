@@ -4,7 +4,9 @@ import Modal from "react-modal";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../redux/productSlice";
-import { queryParams } from "../pages/home/Home";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import t from '../../translate/fa.json';
 
 const AddProduct: FC = () => {
 
@@ -50,12 +52,10 @@ const AddProduct: FC = () => {
       })
 
       Services.addProducts(data).then(() => {
+        toast.success(t.product_added);
         Services.getProducts(addQueryParams)
           .then((res) => {
             dispatch(setProduct(res.list));
-            if (res.totalRowCount > queryParams.skip + queryParams.count) {
-              queryParams.skip += queryParams.count;
-            }
           })
           .catch((err) => {
             console.error(err);
@@ -103,7 +103,7 @@ const AddProduct: FC = () => {
         }}
         className="bg-[#46B666] rounded-lg text-white px-16 py-3"
       >
-        افزودن محصول
+        {t.add_product}
       </button>
       <Modal
         style={customStyles}
@@ -118,15 +118,15 @@ const AddProduct: FC = () => {
           className="flex flex-col gap-[18px] w-1/2"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-black"> افزودن محصول </h2>
+          <h2 className="text-black">  </h2>
 
           <div className="flex flex-col gap-2">
             <label className="text-[#9A9A9A] " htmlFor="ProductTitle">
-              نام محصول
+              {t.product_name}
             </label>
             <input
               className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
-              placeholder="نام محصول..."
+              placeholder={`${t.product_name}...`}
               type="text"
               name="ProductTitle"
               id="ProductTitle"
@@ -135,13 +135,13 @@ const AddProduct: FC = () => {
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-[#9A9A9A] " htmlFor="price">
-              قیمت محصول
+              {t.product_price}
             </label>
 
             <input
               type="number"
               className="bg-white text-[#9a9a9a] border border-solid border-[#9A9A9A] rounded-lg px-4 py-[13px] "
-              placeholder="قیمت محصول..."
+              placeholder={`${t.product_price}...`}
               name="ProductPrice"
               id="ProductPrice"
               onChange={handleInputChange}
@@ -150,7 +150,7 @@ const AddProduct: FC = () => {
 
           <div className="flex flex-col gap-2">
             <label className="text-[#9A9A9A] " htmlFor="description">
-              توضیحات
+              {t.description}
             </label>
 
             <textarea
@@ -164,7 +164,7 @@ const AddProduct: FC = () => {
 
           <div className="flex flex-col gap-2">
             <label className="text-[#9A9A9A] " htmlFor="image">
-              بازگذاری عکس محصول
+              {t.upload_product_photo}
             </label>
             <div className="border border-solid border-[#b6b6b6] bg-white rounded-lg flex justify-between items-center ">
               <p className="text-[#a0a0a0] mb-0 mr-3"> {fileUploaded} </p>
@@ -172,7 +172,7 @@ const AddProduct: FC = () => {
                 onClick={handleOpenFileBrowser}
                 className="bg-[#c9c9c9] text-[#5c5c5c] py-3 px-6 rounded-lg w-fit self-end"
               >
-                انتخاب فایل
+                {t.choose_file}
               </div>
             </div>
             <input
@@ -184,20 +184,21 @@ const AddProduct: FC = () => {
               onChange={handleInputChange}
             />
           </div>
-          <p className="text-[#FF6666] h-8">{error ? 'تمام فیلدها الزامی میباشند' : null}</p>
+          <p className="text-[#FF6666] h-8">{error ? t.all_fields_are_required : null}</p>
           <div className="flex justify-between mt-5">
             <button
               onClick={() => setShowModal(false)}
               className="bg-white border-none text-[#5c5c5c] px-16 py-3 "
             >
-              انصراف
+              {t.cancel}
             </button>
             <button className="bg-[#46B666] rounded-lg text-white px-16 py-3">
-              ثبت محصول
+              {t.submit_product}
             </button>
           </div>
         </form>
       </Modal>
+      <ToastContainer />
     </>
   );
 };
